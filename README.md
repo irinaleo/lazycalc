@@ -9,6 +9,7 @@ size. (That is, generally speaking, any phone supported by your IDE. Looking not
 not required.)
 
 *LAYING OUT THE CALCULATOR*
+
 Your calculator must look more or less like a calculator. At the minimum, it must include a full (decimal)
 number pad, along with buttons for the basic operations (+, -, *, /), equals, and clear. You may include
 other buttons if you wish.
@@ -20,6 +21,7 @@ smallest device and not have it rescale. The buttons must form a neatly aligned 
 out of alignment with one another will not receive full credit, even if they rescale successfully.
 
 *RESIZING THE LAYOUT*
+
 Your layout must automatically adapt to being displayed on devices of various sizes. It is likely possible
 to handle this programmatically, but I would recommend using the constraint system available on your
 chosen platform (or, again, SwiftUI). I will test your interface by loading it in Xcode or Android Studio, as
