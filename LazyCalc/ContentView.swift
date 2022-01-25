@@ -21,12 +21,12 @@ enum myButton: String {
     case add = "+"
     case subtract = "-"
     case divide = "÷"
-    case multiply = "x"
+    case multiply = "×"
     case equal = "="
     case clear = "AC"
     case decimal = "."
     case percent = "%"
-    case negate = "-/+"
+    case negate = "⁺∕₋"
     
     var buttonColor: Color {
         switch self {
@@ -56,7 +56,7 @@ struct ContentView: View {
         VStack {
             Spacer()
             
-            // total
+            // total field
             HStack {
                 Spacer()
                 Text(value)
@@ -64,10 +64,8 @@ struct ContentView: View {
                     .font(.system(size: 70))
                     .foregroundColor(.black)
             }
-            .padding()
             
-            
-            // buttons
+            // button field
             ForEach(buttons, id: \.self) { row in
                 HStack(spacing: 10) {
                     ForEach(row, id: \.self) { item in
@@ -89,6 +87,7 @@ struct ContentView: View {
                 .padding(.bottom, 3)
             }
         }
+        .padding()
     }
     
     func buttonWidth(item: myButton) -> CGFloat {
@@ -111,11 +110,14 @@ struct ContentView: View {
             self.value = "0"
         default:
             let number = button.rawValue
-            if self.value == "0" {
+            if self.value == "0"{
                 value = number
             }
-            else {
+            else if self.value.count < 8 {
                 self.value = "\(self.value)\(number)"
+            }
+            else {
+                break
             }
         }
         
