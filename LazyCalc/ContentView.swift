@@ -42,6 +42,8 @@ enum myButton: String {
 
 struct ContentView: View {
     
+    @State var value = "0"
+    
     let buttons: [[myButton]] = [
         [.clear, .negate, .percent, .divide],
         [.seven, .eight, .nine, .multiply],
@@ -50,7 +52,6 @@ struct ContentView: View {
         [.zero, .decimal, .equal]
     ]
     
-    
     var body: some View {
         VStack {
             Spacer()
@@ -58,9 +59,9 @@ struct ContentView: View {
             // total
             HStack {
                 Spacer()
-                Text("0")
+                Text(value)
                     .bold()
-                    .font(.system(size: 60))
+                    .font(.system(size: 70))
                     .foregroundColor(.black)
             }
             .padding()
@@ -71,7 +72,7 @@ struct ContentView: View {
                 HStack(spacing: 10) {
                     ForEach(row, id: \.self) { item in
                         Button(action: {
-                            
+                            self.tapped(button: item)
                         }, label: {
                             Text(item.rawValue)
                                 .font(.system(size: 35))
@@ -91,11 +92,33 @@ struct ContentView: View {
     }
     
     func buttonWidth(item: myButton) -> CGFloat {
+        if item == .zero {
+            // make the zero button wider
+            return ((UIScreen.main.bounds.width - (4*12)) / 4) * 2
+        }
         return (UIScreen.main.bounds.width - (5*12)) / 4
     }
     
     func buttonHeight() -> CGFloat {
         return (UIScreen.main.bounds.width - (5*12)) / 4
+    }
+    
+    func tapped(button: myButton) {
+        switch button {
+        case .add, .subtract, .multiply, .divide, .equal, .decimal, .negate, .percent:
+            break
+        case .clear:
+            self.value = "0"
+        default:
+            let number = button.rawValue
+            if self.value == "0" {
+                value = number
+            }
+            else {
+                self.value = "\(self.value)\(number)"
+            }
+        }
+        
     }
 }
 
