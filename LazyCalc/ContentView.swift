@@ -26,18 +26,35 @@ enum myButton: String {
     case clear = "AC"
     case decimal = "."
     case percent = "%"
-    case negative = "-/+"
+    case negate = "-/+"
+    
+    var buttonColor: Color {
+        switch self {
+        case .add, .subtract, .multiply, .divide, .equal:
+            return .teal
+        case .clear, .negate, .percent:
+            return Color(.lightGray)
+        default:
+            return Color(UIColor(red: 43/255.0, green: 45/255.0, blue: 47/255.0, alpha: 1))
+        }
+    }
 }
 
 struct ContentView: View {
     
     let buttons: [[myButton]] = [
-        [.seven, .eight, .nine]
+        [.clear, .negate, .percent, .divide],
+        [.seven, .eight, .nine, .multiply],
+        [.four, .five, .six, .subtract],
+        [.one, .two, .three, .add],
+        [.zero, .decimal, .equal]
     ]
     
     
     var body: some View {
         VStack {
+            Spacer()
+            
             // total
             HStack {
                 Spacer()
@@ -51,22 +68,34 @@ struct ContentView: View {
             
             // buttons
             ForEach(buttons, id: \.self) { row in
-                HStack {
+                HStack(spacing: 10) {
                     ForEach(row, id: \.self) { item in
                         Button(action: {
                             
                         }, label: {
                             Text(item.rawValue)
                                 .font(.system(size: 35))
-                                .frame(width: 70, height: 70)
-                                .background(Color.teal)
+                                .frame(
+                                    width: self.buttonWidth(item: item),
+                                    height: self.buttonHeight()
+                                )
+                                .background(item.buttonColor)
                                 .foregroundColor(.white)
-                                .cornerRadius(35)
+                                .cornerRadius(self.buttonWidth(item: item)/2)
                         })
                     }
                 }
+                .padding(.bottom, 3)
             }
         }
+    }
+    
+    func buttonWidth(item: myButton) -> CGFloat {
+        return (UIScreen.main.bounds.width - (5*12)) / 4
+    }
+    
+    func buttonHeight() -> CGFloat {
+        return (UIScreen.main.bounds.width - (5*12)) / 4
     }
 }
 
