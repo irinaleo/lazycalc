@@ -53,41 +53,46 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            // total field
-            HStack {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            VStack {
                 Spacer()
-                Text(value)
-                    .bold()
-                    .font(.system(size: 70))
-                    .foregroundColor(.black)
-            }
-            
-            // button field
-            ForEach(buttons, id: \.self) { row in
-                HStack(spacing: 10) {
-                    ForEach(row, id: \.self) { item in
-                        Button(action: {
-                            self.tapped(button: item)
-                        }, label: {
-                            Text(item.rawValue)
-                                .font(.system(size: 35))
-                                .frame(
-                                    width: self.buttonWidth(item: item),
-                                    height: self.buttonHeight()
-                                )
-                                .background(item.buttonColor)
-                                .foregroundColor(.white)
-                                .cornerRadius(self.buttonWidth(item: item)/2)
-                        })
-                    }
+                    
+                // total field
+                HStack {
+                    Spacer()
+                    Text(value)
+                        .bold()
+                        .font(.system(size: 70))
+                        .foregroundColor(.white)
                 }
-                .padding(.bottom, 3)
+                
+                // button field
+                ForEach(buttons, id: \.self) { row in
+                    HStack(spacing: 10) {
+                        ForEach(row, id: \.self) { item in
+                            Button(action: {
+                                self.tapped(button: item)
+                            }, label: {
+                                Text(item.rawValue)
+                                    .font(.system(size: 35))
+                                    .frame(
+                                        width: self.buttonWidth(item: item),
+                                        height: self.buttonHeight()
+                                    )
+                                    .background(item.buttonColor)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(self.buttonWidth(item: item)/2)
+                            })
+                        }
+                    }
+                    .padding(.bottom, 3)
+                }
             }
+            .padding()
+            
         }
-        .padding()
+        
     }
     
     func buttonWidth(item: myButton) -> CGFloat {
@@ -109,16 +114,7 @@ struct ContentView: View {
         case .clear:
             self.value = "0"
         default:
-            let number = button.rawValue
-            if self.value == "0"{
-                value = number
-            }
-            else if self.value.count < 8 {
-                self.value = "\(self.value)\(number)"
-            }
-            else {
-                break
-            }
+            value = button.rawValue
         }
         
     }
