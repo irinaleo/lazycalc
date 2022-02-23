@@ -43,6 +43,8 @@ enum myButton: String {
 struct ContentView: View {
     
     @State var value = "0"
+    @State var stream = 0
+    @State var operation = ""
     
     let buttons: [[myButton]] = [
         [.clear, .negate, .percent, .divide],
@@ -109,14 +111,44 @@ struct ContentView: View {
     
     func tapped(button: myButton) {
         switch button {
-        case .add, .subtract, .multiply, .divide, .equal, .decimal, .negate, .percent:
+        case .add, .subtract, .multiply, .divide:
+            self.operation = button.rawValue
+            self.stream = Int(self.value) ?? 0
+        case .equal:
+            let stream = self.stream
+            let current = Int(self.value) ?? 0
+            switch self.operation {
+            case "+":
+                self.value = "\(stream + current)"
+            case "-":
+                self.value = "\(stream - current)"
+            case "×":
+                self.value = "\(stream * current)"
+            case "÷":
+                self.value = "\(stream / current)"
+            default:
+                break
+            }
+            self.operation = ""
+        case .decimal, .negate, .percent:
             break
         case .clear:
             self.value = "0"
+            self.operation = ""
         default:
-            value = button.rawValue
+            let num = button.rawValue
+            if self.value == "0" {
+                value = num
+            }
+            else {
+                if self.operation == "" {
+                    self.value = "\(self.value)\(num)"
+                }
+                else {
+                    self.value = num
+                }
+            }
         }
-        
     }
 }
 
